@@ -26,9 +26,15 @@ void loop() {
   }
     Serial.print("State: ");
   for (int i = 0; i < numSensors; i++) {
+    if (irSensorValues[i] == HIGH){
+    irSensorValues[i] = 0;
     Serial.print(irSensorValues[i]);
-    Serial.print(" ");
+    }else{
+    irSensorValues[i] = 1;
+    Serial.print(irSensorValues[i]);
+    }
   }
+     // เพื่อขึ้นบรรทัดใหม่ 
   Serial.println();  // เพื่อขึ้นบรรทัดใหม่
 
   if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == HIGH) {
