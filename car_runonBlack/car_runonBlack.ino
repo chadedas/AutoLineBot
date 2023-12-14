@@ -3,7 +3,6 @@ int Kd = 5;
 int baseSpeed = 50;
 int maxSpeed = 255;
 
-
 int preError = 0;
 int sumError = 0;
 
@@ -21,14 +20,15 @@ void setup() {
 }
 
 void loop() {
+  Serial.println("");
   for (int i = 0; i < numSensors; i++) {
     irSensorValues[i] = digitalRead(irSensorPins[i]);  // อ่านค่า Digital จากเซนเซอร์
   }
-  if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == LOW) {
+  if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == HIGH) {
     error = 4;
           Serial.print("Error Value: ");
       Serial.println(error);
-  } else if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == HIGH && irSensorValues[4] == LOW) {
+  } else if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == HIGH && irSensorValues[4] == HIGH) {
     error = 3;
           Serial.print("Error Value: ");
       Serial.println(error);
@@ -60,31 +60,24 @@ void loop() {
     error = -4;
       Serial.print("Error Value: ");
       Serial.println(error);
+  } else {
+    Serial.println("Error Value: No Vaule");
   }
-
-
+ // คำนวณ PID และควบคุมความเร็วของมอเตอร์
   int speedChange = Kp * error + Kd * (error - preError);
-  int MotorLeft = baseSpeed + speedChange;
+  int leftSpeed = baseSpeed + speedChange;
+  int rightSpeed = baseSpeed - speedChange;
 
-  int motorSpeed = Kp * error + Kd * (error - preError);
-  int leftSpeed = baseSpeed + motorSpeed;
-  int rightSpeed = baseSpeed - motorSpeed;
+  // จำกัดความเร็วให้อยู่ในช่วงที่กำหนด
+  if (leftSpeed > maxSpeed) leftSpeed = maxSpeed;
+  if (rightSpeed > maxSpeed) rightSpeed = maxSpeed;
+  if (leftSpeed < -maxSpeed) leftSpeed = -maxSpeed;
+  if (rightSpeed < -maxSpeed) rightSpeed = -maxSpeed;
 
-
-  if(leftSpeed > maxSpeed) 
-  leftSpeed = maxSpeed;
-  if(rightSpeed > maxSpeed) 
-  rightSpeed = maxSpeed;
-
-  if(leftSpeed < -maxSpeed) 
-  leftSpeed = -maxSpeed;
-  if(rightSpeed < -maxSpeed) 
-  rightSpeed = -maxSpeed;
-
- //motor(1,leftSpeed);
- //motor(2,rightSpeed);
- 
-
-  preError = error;
-  sumError += error;
+  // แสดงค่าความเร็วทาง Serial Monitor
+  Serial.print("Left Speed: ");
+  Serial.println(leftSpeed);
+  Serial.print("Right Speed: ");
+  Serial.println(rightSpeed);
+  delay(2000);
 } 
