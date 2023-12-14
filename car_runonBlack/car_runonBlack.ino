@@ -1,5 +1,8 @@
-int Kp = 20;
-int Kd = 5;
+float june = 1.45124;
+
+
+float Kp = 20*june;
+float Kd = 5*june;
 int baseSpeed = 50;
 int maxSpeed = 255;
 
@@ -67,7 +70,6 @@ void loop() {
 
 
   if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == LOW) {
-    Serial.println("Not found Black Line !!!");
   } else {
     Serial.print("Error Value: ");
     Serial.println(error);
@@ -92,5 +94,5 @@ void loop() {
 
     error = 0;
   }
-  delay(1000);
+  delay(500);
 }
