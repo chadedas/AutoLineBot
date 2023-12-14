@@ -24,6 +24,13 @@ void loop() {
   for (int i = 0; i < numSensors; i++) {
     irSensorValues[i] = digitalRead(irSensorPins[i]);  // อ่านค่า Digital จากเซนเซอร์
   }
+    Serial.print("State: ");
+  for (int i = 0; i < numSensors; i++) {
+    Serial.print(irSensorValues[i]);
+    Serial.print(" ");
+  }
+  Serial.println();  // เพื่อขึ้นบรรทัดใหม่
+
   if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == HIGH) {
     error = 4;
           Serial.print("Error Value: ");
@@ -63,6 +70,8 @@ void loop() {
   } else {
     Serial.println("Error Value: No Vaule");
   }
+
+
  // คำนวณ PID และควบคุมความเร็วของมอเตอร์
   int speedChange = Kp * error + Kd * (error - preError);
   int leftSpeed = baseSpeed + speedChange;
