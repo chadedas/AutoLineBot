@@ -79,6 +79,7 @@ void loop() {
 
 
  // คำนวณ PID และควบคุมความเร็วของมอเตอร์
+  sumError += error;
   int speedChange = Kp * error + Kd * (error - preError);
   int leftSpeed = baseSpeed + speedChange;
   int rightSpeed = baseSpeed - speedChange;
@@ -94,5 +95,8 @@ void loop() {
   Serial.println(leftSpeed);
   Serial.print("Right Speed: ");
   Serial.println(rightSpeed);
+  Serial.print("Sum Error: ");
+  Serial.println(sumError);
   delay(2000);
+  error = 0;
 } 
