@@ -39,46 +39,39 @@ void loop() {
 
   if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == HIGH) {
     error = 4;
-          Serial.print("Error Value: ");
-      Serial.println(error);
+    
   } else if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == HIGH && irSensorValues[4] == HIGH) {
     error = 3;
-          Serial.print("Error Value: ");
-      Serial.println(error);
+    
   } else if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == HIGH && irSensorValues[4] == LOW) {
     error = 2;
-          Serial.print("Error Value: ");
-      Serial.println(error);
+    
   } else if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == HIGH && irSensorValues[3] == HIGH && irSensorValues[4] == LOW) {
     error = 1;
-          Serial.print("Error Value: ");
-      Serial.println(error);
+    
   } else if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == HIGH && irSensorValues[3] == LOW && irSensorValues[4] == LOW) {
     error = 0;
-          Serial.print("Error Value: ");
-      Serial.println(error);
+    
   } else if (irSensorValues[0] == LOW && irSensorValues[1] == HIGH && irSensorValues[2] == HIGH && irSensorValues[3] == LOW && irSensorValues[4] == LOW) {
     error = -1;
-          Serial.print("Error Value: ");
-      Serial.println(error);
+    
   } else if (irSensorValues[0] == LOW && irSensorValues[1] == HIGH && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == LOW) {
     error = -2;
-          Serial.print("Error Value: ");
-      Serial.println(error);
+    
   } else if (irSensorValues[0] == HIGH && irSensorValues[1] == HIGH && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == LOW) {
     error = -3;
-          Serial.print("Error Value: ");
-      Serial.println(error);
+    
   } else if (irSensorValues[0] == HIGH && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == LOW) {
     error = -4;
-      Serial.print("Error Value: ");
-      Serial.println(error);
-  } else {
-    Serial.println("Error Value: No Vaule");
+
   }
+  
 
-
- // คำนวณ PID และควบคุมความเร็วของมอเตอร์
+if (irSensorValues[0] == LOW && irSensorValues[1] == LOW && irSensorValues[2] == LOW && irSensorValues[3] == LOW && irSensorValues[4] == LOW){
+    Serial.println("Not found Black Line !!!");
+}else{
+        Serial.print("Error Value: ");
+      Serial.println(error);
   sumError += error;
   int speedChange = Kp * error + Kd * (error - preError);
   int leftSpeed = baseSpeed + speedChange;
@@ -97,6 +90,9 @@ void loop() {
   Serial.println(rightSpeed);
   Serial.print("Sum Error: ");
   Serial.println(sumError);
-  delay(2000);
+  
   error = 0;
+
+}
+  delay(1000);
 } 
