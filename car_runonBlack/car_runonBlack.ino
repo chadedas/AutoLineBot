@@ -44,7 +44,7 @@ bool W(int n) {
 }
 
 const int numSensors = 5;                                // จำนวนเซนเซอร์
-const int irSensorPins[numSensors] = { 6, 5, 4, 3, 2 };  // ขา Digital Input ที่เชื่อมต่อกับเซนเซอร์
+const int irSensorPins[numSensors] = { A5, A4, A3, A2, A1 };  // ขา Digital Input ที่เชื่อมต่อกับเซนเซอร์
 int irSensorValues[numSensors];                          // เก็บค่าที่ได้จากเซนเซอร์
 
 void setup() {
