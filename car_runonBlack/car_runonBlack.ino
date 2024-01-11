@@ -18,13 +18,13 @@ int motorSpeed;
 // Motor A
 int dir1PinA = 2;
 int dir2PinA = 3;
-int motorLeft = 6; //   เพื่อให้ PWM สามารถควบคุมความเร็วมอเตอร์ 
+int motorLeft = 6;  //   เพื่อให้ PWM สามารถควบคุมความเร็วมอเตอร์
 
 // Motor B
 
 int dir1PinB = 4;
 int dir2PinB = 5;
-int motorRight = 7; // เพื่อให้ PWM สามารถควบคุมความเร็วมอเตอร์
+int motorRight = 7;  // เพื่อให้ PWM สามารถควบคุมความเร็วมอเตอร์
 
 
 bool B(int n) {
@@ -53,12 +53,12 @@ void setup() {
   for (int i = 0; i < numSensors; i++) {
     pinMode(irSensorPins[i], INPUT);  // กำหนดขา Digital เป็นขานำเข้า
   }
-  pinMode(dir1PinA,OUTPUT);
-  pinMode(dir2PinA,OUTPUT);
-  pinMode(motorLeft,OUTPUT);
-  pinMode(dir1PinB,OUTPUT);
-  pinMode(dir2PinB,OUTPUT);
-  pinMode(motorRight,OUTPUT);
+  pinMode(dir1PinA, OUTPUT);
+  pinMode(dir2PinA, OUTPUT);
+  pinMode(motorLeft, OUTPUT);
+  pinMode(dir1PinB, OUTPUT);
+  pinMode(dir2PinB, OUTPUT);
+  pinMode(motorRight, OUTPUT);
 }
 
 void loop() {
