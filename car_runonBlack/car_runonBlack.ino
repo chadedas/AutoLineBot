@@ -11,7 +11,7 @@ int groundV = 0;
 int meanV = 500;
 
 int baseSpeed = 100;
-int maxSpeed = 255;
+int maxSpeed = 155;
 int rightSpeed, leftSpeed;
 int motorSpeed;
 
@@ -112,8 +112,5 @@ void loop() {
 
   preError = error;
   sumError += error;
-
-  //lcd("e=%d pe=%d|Ls=%d RS=%d|kp=%d kd=%d", error,preError, leftSpeed, rightSpeed ,Kp*error, Kd*(error - preError) );
-
   error = 0;
 }
