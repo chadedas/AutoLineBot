@@ -1,4 +1,4 @@
-int Kp = 25;
+int Kp = 0.006;
 int Kd = 0;
 int Ki = 0;
 int error = 0;
@@ -10,7 +10,7 @@ int lineV = 0;
 int groundV = 0;
 int meanV = 500;
 
-int baseSpeed = 80;
+int baseSpeed = 90;
 int maxSpeed = 155;
 int rightSpeed, leftSpeed;
 int motorSpeed;
@@ -65,8 +65,8 @@ void setup() {
   pinMode(dir1PinB, OUTPUT);
   pinMode(dir2PinB, OUTPUT);
   pinMode(motorRight, OUTPUT);
-      analogWrite(motorLeft, 0);
-    analogWrite(motorRight, 0);
+  analogWrite(motorLeft, 0);
+  analogWrite(motorRight, 0);
 }
 
 void loop() {
@@ -104,6 +104,8 @@ if (W(irSensorValues[0]) && W(irSensorValues[1]) && W(irSensorValues[2]) && W(ir
     analogWrite(motorLeft, 0);
     analogWrite(motorRight, 0);
 
+  
+  }
   }else{
  motorSpeed = Kp * error;
   leftSpeed = baseSpeed + motorSpeed;
@@ -124,7 +126,6 @@ if (W(irSensorValues[0]) && W(irSensorValues[1]) && W(irSensorValues[2]) && W(ir
 
   digitalWrite(dir2PinB, LOW);
   delay(33);
-  }
   }
 
 
