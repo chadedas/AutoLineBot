@@ -1,3 +1,4 @@
+int P , I , D;
 int Kp = 0.006;
 int Kd = 0;
 int Ki = 0;
@@ -30,10 +31,10 @@ int motorRight = 10;  // เพื่อให้ PWM สามารถคว�
 // ติด
 bool W(int n) {
   if (n < meanV) {  // is black
- 
+
     return true;
   } else {
-   
+
     return false;
   }
 }
@@ -41,17 +42,17 @@ bool W(int n) {
 //ดับ
 bool B(int n) {
   if (n >= meanV) {  // is white
- 
+
     return true;
   } else {
-   
+
     return false;
   }
 }
 
-const int numSensors = 5;                                // จำนวนเซนเซอร์
+const int numSensors = 5;                                     // จำนวนเซนเซอร์
 const int irSensorPins[numSensors] = { A5, A4, A3, A2, A1 };  // ขา Digital Input ที่เชื่อมต่อกับเซนเซอร์
-int irSensorValues[numSensors];                          // เก็บค่าที่ได้จากเซนเซอร์
+int irSensorValues[numSensors];                               // เก็บค่าที่ได้จากเซนเซอร์
 
 void setup() {
   Serial.begin(9600);  // เริ่มต้น Serial communication
@@ -97,43 +98,35 @@ void loop() {
   else if (W(irSensorValues[0]) && W(irSensorValues[1]) && W(irSensorValues[2]) && W(irSensorValues[3]) && W(irSensorValues[4])) {
     error = preError;
   }
-if (W(irSensorValues[0]) && W(irSensorValues[1]) && W(irSensorValues[2]) && W(irSensorValues[3]) && W(irSensorValues[4])) {
-      analogWrite(motorLeft, 0);
-    analogWrite(motorRight, 0);
-  if (B(irSensorValues[0]) && B(irSensorValues[1]) && B(irSensorValues[2]) && B(irSensorValues[3]) && B(irSensorValues[4])) {
+  if (W(irSensorValues[0]) && W(irSensorValues[1]) && W(irSensorValues[2]) && W(irSensorValues[3]) && W(irSensorValues[4])) {
     analogWrite(motorLeft, 0);
     analogWrite(motorRight, 0);
+    if (B(irSensorValues[0]) && B(irSensorValues[1]) && B(irSensorValues[2]) && B(irSensorValues[3]) && B(irSensorValues[4])) {
+      analogWrite(motorLeft, 0);
+      analogWrite(motorRight, 0);
+    }
+  } else {
+      P = error;
+  I = I + error;
+  D = error - preError;
+    motorSpeed = (Kp * P) + (Ki * I) + (Kd * D);
+    leftSpeed = baseSpeed + motorSpeed;
+    rightSpeed = baseSpeed - motorSpeed;
 
-  
-  }
-  }else{
- motorSpeed = Kp * error;
-  leftSpeed = baseSpeed + motorSpeed;
-  rightSpeed = baseSpeed - motorSpeed;
+    if (leftSpeed > maxSpeed) leftSpeed = maxSpeed;
+    if (rightSpeed > maxSpeed) rightSpeed = maxSpeed;
 
-  if (leftSpeed > maxSpeed) leftSpeed = maxSpeed;
-  if (rightSpeed > maxSpeed) rightSpeed = maxSpeed;
-
-  if (leftSpeed < baseSpeed) leftSpeed = baseSpeed;
-  if (rightSpeed < baseSpeed) leftSpeed = baseSpeed;
-  analogWrite(motorLeft, leftSpeed);
+    if (leftSpeed < baseSpeed) leftSpeed = baseSpeed;
+    if (rightSpeed < baseSpeed) leftSpeed = baseSpeed;
+    analogWrite(motorLeft, leftSpeed);
     digitalWrite(dir1PinA, HIGH);
 
-  digitalWrite(dir2PinA, LOW);
+    digitalWrite(dir2PinA, LOW);
 
-  analogWrite(motorRight, rightSpeed);
+    analogWrite(motorRight, rightSpeed);
     digitalWrite(dir1PinB, HIGH);
 
-  digitalWrite(dir2PinB, LOW);
-  delay(33);
+    digitalWrite(dir2PinB, LOW);
+    delay(33);
   }
-
-
-  // จำกัดความเร็วให้อยู่ในช่วงที่กำหนด
-
- 
-
-  preError = error;
-  sumError += error;
-  error = 0;
 }

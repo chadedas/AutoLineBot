@@ -1,18 +1,16 @@
-#include <L298N.h>
-#include <L298NX2.h>
 
-// Motor A pins (EN_A = enable motor, IN1_A = forward, IN2_A = backward)
-int EN_A = 9;
-int IN1_A = 7;
-int IN2_A = 6;
+// Motor A pins (enableA = enable motor, pinA1 = forward, pinA2 = backward)
+int enableA = 9;
+int pinA1 = 7;
+int pinA2 = 6;
 
-//Motor B pins (enabledB = enable motor, IN2_B = forward, IN2_B = backward)
-int EN_B = 10;
-int IN1_B = 4;
-int IN2_B = 5;
+//Motor B pins (enabledB = enable motor, pinB2 = forward, pinB2 = backward)
+int enableB = 10;
+int pinB1 = 4;
+int pinB2 = 5;
 int P, D, I, previousError, PIDvalue, error;
 int lsp, rsp;
-int lfspeed = 200;
+int lfspeed = 100;
 
 float Kp = 0;
 float Kd = 0;
@@ -21,10 +19,19 @@ float Ki = 0 ;
 
 int minValues[6], maxValues[6], threshold[6];
 
-L298NX2 motors(EN_A, IN1_A, IN2_A, EN_B, IN1_B, IN2_B);
 void setup()
 {
   Serial.begin(9600);
+  pinMode(pinA1, OUTPUT);
+  pinMode(pinA2, OUTPUT);
+  pinMode(enableA, OUTPUT);
+  pinMode(pinB1, OUTPUT);
+  pinMode(pinB2, OUTPUT);
+  pinMode(enableB, OUTPUT);
+      digitalWrite(7,HIGH);
+    digitalWrite(5,LOW);
+    digitalWrite(6,LOW);
+    digitalWrite(4,HIGH);
 }
 
 
@@ -36,15 +43,14 @@ void loop()
     if (analogRead(A1) > threshold[1] && analogRead(A5) < threshold[5] )
     {
       lsp = 0; rsp = lfspeed;
-        motors.setSpeedA(0);
-        motors.setSpeedB(lfspeed);
+          analogWrite(enableA, 0);
+    analogWrite(enableB, lfspeed);
     }
 
     else if (analogRead(A5) > threshold[5] && analogRead(A1) < threshold[1])
-    { 
-      lsp = lfspeed; rsp = 0;
-        motors.setSpeedA(lfspeed);
-        motors.setSpeedB(0);
+    { lsp = lfspeed; rsp = 0;
+    analogWrite(enableA, lfspeed);
+    analogWrite(enableB, 0);
     }
     else if (analogRead(A3) > threshold[3])
     {
@@ -83,13 +89,14 @@ void linefollow()
     rsp = 255;
   }
   if (rsp < 90 && lsp > 0) {
-    rsp = 90;
+    rsp = 100;
   }
     if (rsp <= 90 && rsp >= 0) {
     rsp = 0;
   }
-          motors.setSpeedA(lsp);
-        motors.setSpeedB(rsp);
+
+    analogWrite(enableA, 100);
+    analogWrite(enableB, -100);
 
 }
 
@@ -103,8 +110,8 @@ void calibrate()
   
   for (int i = 0; i < 3000; i++)
   {
-            motors.setSpeedA(100);
-        motors.setSpeedB(-100);
+    analogWrite(enableA, 100);
+    analogWrite(enableB, -100);
 
     for ( int i = 1; i < 6; i++)
     {
@@ -126,6 +133,10 @@ void calibrate()
     Serial.print("   ");
   }
   Serial.println();
-          motors.setSpeedA(0);
-        motors.setSpeedB(0);
+    analogWrite(enableA, 0);
+    analogWrite(enableB, 0);
+        digitalWrite(7,HIGH);
+    digitalWrite(5,LOW);
+    digitalWrite(6,LOW);
+    digitalWrite(4,HIGH);
 }
